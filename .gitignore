@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# Environment files
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+client/.env
+client/.env.*
+!client/.env.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+*.pem
+
+# Backend specific
+backend/db.sqlite3
+backend/db.sqlite3-journal
+backend/media/
+backend/staticfiles/
+backend/__pycache__/
+backend/*.pyc
+backend/local_settings.py
+backend/logs/
+
+# Frontend specific
+client/node_modules/
+client/.next/
+client/out/
+client/.nuxt/
+client/dist/
+client/build/
+client/.env.local
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
+client/coverage/
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+client/.pnpm-debug.log*
+client/.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Misc
+*.bak
+*.tmp
+*.temp
+.DS_Store
+docs/
