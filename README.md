@@ -1,5 +1,229 @@
 # Modern, scalable E-commerce Platform
 
+## Development Setup Guide
+
+### Project Structure
+```
+naturwest-shop/
+├── backend/           # Django backend
+│   ├── Dockerfile    # Python 3.11 setup
+│   ├── .env          # Backend environment variables
+│   ├── requirements.txt
+│   ├── core/         # Django project directory
+│   └── api/          # Django REST API app
+├── client/           # Next.js frontend
+│   ├── Dockerfile    # Node 18 setup
+│   ├── .env.local    # Frontend environment variables
+│   └── package.json
+└── docker-compose.yml
+```
+
+### Prerequisites
+- Docker and Docker Compose
+- Python 3.11+ (for local development)
+- Node.js 18+ (for local development)
+- PostgreSQL 15+ (handled by Docker)
+- Redis 7+ (handled by Docker)
+
+### Environment Files Setup
+
+1. Backend Environment (backend/.env):
+   ```
+   DEBUG=True
+   SECRET_KEY=your-secret-key
+   DATABASE_URL=postgres://postgres:postgres@localhost:5432/naturwest
+   ALLOWED_HOSTS=localhost,127.0.0.1
+   CORS_ALLOWED_ORIGINS=http://localhost:3000
+   ```
+
+2. Frontend Environment (client/.env.local):
+   ```
+   NEXT_PUBLIC_API_URL=http://localhost:8000/api
+   ```
+
+### Docker Setup
+
+1. Backend Dockerfile (backend/Dockerfile):
+   ```dockerfile
+   FROM python:3.11-slim
+   
+   WORKDIR /app
+   
+   # Install system dependencies
+   RUN apt-get update && apt-get install -y \
+       postgresql-client \
+       && rm -rf /var/lib/apt/lists/*
+   
+   # Install Python dependencies
+   COPY requirements.txt .
+   RUN pip install --no-cache-dir -r requirements.txt
+   
+   # Copy project files
+   COPY . .
+   
+   # Run migrations and start server
+   CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+   ```
+
+2. Frontend Dockerfile (client/Dockerfile):
+   ```dockerfile
+   FROM node:18-alpine
+   
+   WORKDIR /app
+   
+   # Install dependencies
+   COPY package*.json ./
+   RUN npm install
+   
+   # Copy project files
+   COPY . .
+   
+   # Expose port 3000
+   ENV PORT=3000
+   
+   # Build and start the application
+   CMD ["npm", "run", "dev"]
+   ```
+
+### Running the Project
+
+#### Using Docker (Recommended)
+
+1. Start all services:
+   ```bash
+   docker-compose up -d
+   ```
+
+2. View service logs:
+   ```bash
+   # All services
+   docker-compose logs -f
+   
+   # Specific service
+   docker-compose logs -f [service_name]  # backend|frontend|db|redis
+   ```
+
+3. Stop all services:
+   ```bash
+   docker-compose down
+   ```
+
+#### Local Development (Alternative)
+
+1. Backend Setup:
+   ```bash
+   cd backend
+   python -m venv venv
+   source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+   pip install -r requirements.txt
+   python manage.py migrate
+   python manage.py runserver
+   ```
+
+2. Frontend Setup:
+   ```bash
+   cd client
+   npm install
+   npm run dev
+   ```
+
+### Accessing Services
+
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8000/api
+- Database: localhost:5432
+  - Username: postgres
+  - Password: postgres
+  - Database: naturwest
+- Redis: localhost:6379
+
+### Database Management
+
+1. View database logs:
+   ```bash
+   docker-compose logs -f db
+   ```
+
+2. Access PostgreSQL CLI:
+   ```bash
+   docker-compose exec db psql -U postgres -d naturwest
+   ```
+
+3. Useful PostgreSQL commands:
+   ```sql
+   \l                 -- List all databases
+   \dt                -- List all tables
+   \d table_name      -- Describe table
+   \q                 -- Quit psql
+   ```
+
+### Troubleshooting
+
+1. Port Conflicts:
+   - If port 3000 is in use, stop the conflicting process:
+     ```bash
+     lsof -i :3000    # Find process
+     kill <PID>       # Stop process
+     ```
+   - Same for other ports (8000, 5432, 6379)
+
+2. Docker Issues:
+   - Ensure Docker Desktop is running
+   - Try rebuilding services: `docker-compose up --build`
+   - Clean up: `docker-compose down -v` (warning: removes volumes)
+
+### Daily Development Workflow
+
+#### Backend Development
+1. Activate virtual environment:
+   ```bash
+   cd backend
+   source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+   ```
+
+2. Run Django development server:
+   ```bash
+   python manage.py runserver
+   ```
+
+#### Frontend Development
+1. Start Next.js development server:
+   ```bash
+   cd client
+   npm run dev
+   ```
+
+#### Docker Development
+1. Start all services:
+   ```bash
+   docker-compose up
+   ```
+
+2. Rebuild services after dependency changes:
+   ```bash
+   docker-compose up --build
+   ```
+
+3. View logs:
+   ```bash
+   docker-compose logs -f [service_name]
+   ```
+
+### Environment Files
+- Backend: `/backend/.env`
+  - Contains Django settings, database credentials, and API keys
+  - Never commit to version control
+
+- Frontend: `/client/.env.local`
+  - Contains Next.js environment variables
+  - Public variables must be prefixed with `NEXT_PUBLIC_`
+  - Never commit to version control
+
+### API Integration
+- Frontend connects to backend via `NEXT_PUBLIC_API_URL` in `.env.local`
+- Default development URL: `http://localhost:8000/api`
+- CORS is configured in Django to allow frontend requests
+
 ## Introduction
 
 This e-commerce project is a modern, scalable platform built with Next.js and Django, designed to handle both B2C and B2B operations. The platform features a robust architecture that prioritizes performance, security, and user experience while maintaining cost efficiency.
@@ -69,10 +293,10 @@ This e-commerce project is a modern, scalable platform built with Next.js and Dj
 - Next.js (App Router) hosted on Vercel
 - TailwindCSS + shadcn/ui
 - React Query for server state management
-- Zustand for lightweight client state
+- Zustand for lightweight client state (not now)
 - TypeScript
-- SSR + ISR for SEO, sitemap, robots.txt
-- Customer "My Account" dashboard
+- SSR + ISR for SEO, sitemap, robots.txt (not now)
+- Customer "My Account" dashboard (not now)
 - Shopping cart, checkout, promo codes
 
 ### Backend
