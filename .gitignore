@@ -56,6 +56,7 @@ client/yarn-debug.log*
 client/yarn-error.log*
 client/.pnpm-debug.log*
 client/.vercel
+client/src/config/constants.ts
 
 # TypeScript
 *.tsbuildinfo
