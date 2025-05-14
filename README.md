@@ -45,10 +45,7 @@ This e-commerce project is a modern, scalable platform built with Next.js and Dj
 - SMTP for transactional emails
 
 ## License
-[License information]
-
-## Contributing
-[Contributing guidelines]
+[MIT License](/LICENSE)
 
 ## Contact
-[Contact information]
+patosorio.88@gmail.com
