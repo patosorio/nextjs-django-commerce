@@ -1,0 +1,47 @@
+name: Backend CI
+
+on:
+  push:
+    branches:
+      - '*'
+    paths:
+      - backend/**
+  pull_request:
+      paths:
+        - backend/**
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+
+  defaults:
+      run:
+        working-directory: backend
+
+  steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install ruff black pytest mypy coverage
+
+      - name: Run Ruff
+        run: ruff check .
+
+      - name: Run Black
+        run: black --check .
+
+      # - name: Run Mypy
+      #   run: mypy app/
+
+      # - name: Run Pytest
+      #   run: |
+      #     coverage run -m pytest
+      #     coverage report
+      
