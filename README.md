@@ -19,10 +19,8 @@ This e-commerce project is a modern, scalable platform built with Next.js and Dj
 1. [Architecture Overview](#architecture-overview)
    - [Frontend](#frontend)
    - [Backend](#backend)
-   - [Component Roles and Interactions](#component-roles-and-interactions)
-   - [Infrastructure](#infrastructure)
+   - [Integrations & Infrastructure](#integrations-&-infrastructure)
    - [DevOps](#devops)
-   - [Integrations](#integrations)
 
 ## Architecture Overview
 
@@ -51,7 +49,7 @@ This e-commerce project is a modern, scalable platform built with Next.js and Dj
 patosorio.88@gmail.com
 
 
-
+```
 backend/
 │
 ├── app/
@@ -91,21 +89,48 @@ backend/
 ├── .env                         # Secrets (never commit to git)
 ├── run.py                       # WSGI launcher
 └── gunicorn.conf.py             # For production deployment
-
-
+```
 
 
 
 Backend Architecture Based on Directory Distribution
-- app/ Directory: This is the core of your application. It contains:
--- __init__.py: This file is used to initialize your Flask app and configure extensions like Firebase. It can also register blueprints.
--- config.py: Contains configuration settings for different environments (development, production).
+|- app/ Directory: This is the core of your application. It contains:
+|──── __init__.py: This file is used to initialize your Flask app and configure extensions like Firebase. It can also register blueprints.
+|────  config.py: Contains configuration settings for different environments (development, production).
 extensions.py: Initializes and configures third-party extensions like Firebase.
--- models/: Contains data models, possibly for Firestore or SQL.
--- api/: Contains route definitions and logic for handling HTTP requests.
--- services/: Contains business logic that can be reused across different parts of the application.
--- tasks/: Contains asynchronous tasks, possibly using Celery.
--- utils/: Contains utility functions and decorators.
--- migrations/: Used for database migrations if using SQLAlchemy.
--- tests/: Contains test cases for your application.
--- firebase/: Could be used for Firebase-specific logic or configurations.
+|────  models/: Contains data models, possibly for Firestore or SQL.
+|──── api/: Contains route definitions and logic for handling HTTP requests.
+|──── services/: Contains business logic that can be reused across different parts of the application.
+|────  tasks/: Contains asynchronous tasks, possibly using Celery.
+|────  utils/: Contains utility functions and decorators.
+|────  migrations/: Used for database migrations if using SQLAlchemy.
+|──── tests/: Contains test cases for your application.
+|──── firebase/: Could be used for Firebase-specific logic or configurations.
+
+
+## Integrations & Infrastructure
+
+| **Feature**                            | **Function**                                                                 | **Service / Tool**                                 |
+|----------------------------------------|------------------------------------------------------------------------------|----------------------------------------------------|
+| **User Authentication**               | Sign up, login, session management                                           | Firebase Authentication (Frontend)                |
+| **Token validation**                  | Securing backend routes                                                      | Firebase Admin SDK (in Flask API)                 |
+| **Product Catalog**                   | B2C product display, filtering, search                                       | Cloud SQL (Postgres) + Indexed API via Flask      |
+| **Customer Data**                     | Preferences, history, saved items, custom pricing                           | Firestore                                          |
+| **B2C Payments**                      | Online checkout, cards, receipts                                             | Vendosystem API                                   |
+| **B2B Orders**                        | Manual invoicing, quote to order flow                                        | Flask + Firestore                                 |
+| **Shipping Automation**               | Real-time shipping updates, tracking, label printing                         | Sendcloud API                                     |
+| **Invoice Generation (B2C)**          | Auto-generate PDF after purchase                                             | Flask + GCP Cloud Tasks or Cloud Functions        |
+| **Invoice Management (B2B)**          | Manually triggered invoices + PDF + email                                   | Flask + Firestore + Storage                       |
+| **Chatbot Assistant**                 | FAQ, support automation                                                      | Langchain + Flask API + Firestore session storage |
+| **User Dashboard (Orders, Profile)**  | React-based account view                                                     | Firestore (real-time data)                        |
+| **Admin Dashboard (Orders, Clients)** | Analytics, filtering, sorting, manual control                               | Flask APIs + Firestore/SQL + React (ShadCN UI)    |
+| **File Uploads (B2B quotes, photos)** | Upload images or docs per user/project                                       | Firebase Storage                                  |
+| **Realtime Order Status**             | Status updates like “Packed”, “Shipped”                                      | Firestore (frontend) + Flask API (backend update) |
+| **Async Tasks (PDF, Notifications)**  | Long-running or retry-safe jobs                                              | Cloud Tasks or Pub/Sub + Cloud Functions          |
+| **Scheduled Jobs**                    | Daily reports, cleanup, auto email reminders                                | Cloud Scheduler + Cloud Tasks                     |
+| **SEO-Friendly Pages**                | SSR catalog/product pages                                                    | Next.js (Server-Side Rendering)                   |
+| **RGPD Compliance (Data download/deletion)** | User can download or delete their data                                 | Flask + Firestore export logic                    |
+| **Logs & Monitoring**                | App behavior, failed tasks, user errors                                      | Google Cloud Logging + Error Reporting            |
+| **Deployment (Backend)**             | Serve Flask APIs in production                                               | Cloud Run                                         |
+| **Deployment (Frontend)**            | Serve React app with fast CDN                                                | Vercel / Firebase Hosting                         |
+| **CI/CD Pipeline**                   | Automated build/test/deploy                                                  | GitHub Actions + GCP Deploy (optional)            |
