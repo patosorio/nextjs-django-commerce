@@ -19,7 +19,7 @@ This e-commerce project is a modern, scalable platform built with Next.js and Dj
 1. [Architecture Overview](#architecture-overview)
    - [Frontend](#frontend)
    - [Backend](#backend)
-   - [Integrations & Infrastructure](#integrations-&-infrastructure)
+   - [Integrations & Infrastructure](#integrations--infrastructure)
    - [DevOps](#devops)
 
 ## Architecture Overview
@@ -41,13 +41,6 @@ This e-commerce project is a modern, scalable platform built with Next.js and Dj
 - Sendcloud API for shipping
 - Langchain + OpenAI chatbot
 - SMTP for transactional emails
-
-## License
-[MIT License](/LICENSE)
-
-## Contact
-patosorio.88@gmail.com
-
 
 ```
 backend/
@@ -92,7 +85,6 @@ backend/
 ```
 
 
-
 Backend Architecture Based on Directory Distribution
 |- app/ Directory: This is the core of your application. It contains:
 |──── __init__.py: This file is used to initialize your Flask app and configure extensions like Firebase. It can also register blueprints.
@@ -108,7 +100,7 @@ extensions.py: Initializes and configures third-party extensions like Firebase.
 |──── firebase/: Could be used for Firebase-specific logic or configurations.
 
 
-## Integrations & Infrastructure
+### Integrations & Infrastructure
 
 | **Feature**                            | **Function**                                                                 | **Service / Tool**                                 |
 |----------------------------------------|------------------------------------------------------------------------------|----------------------------------------------------|
@@ -134,3 +126,13 @@ extensions.py: Initializes and configures third-party extensions like Firebase.
 | **Deployment (Backend)**             | Serve Flask APIs in production                                               | Cloud Run                                         |
 | **Deployment (Frontend)**            | Serve React app with fast CDN                                                | Vercel / Firebase Hosting                         |
 | **CI/CD Pipeline**                   | Automated build/test/deploy                                                  | GitHub Actions + GCP Deploy (optional)            |
+
+
+### DevOps
+
+
+## License
+[MIT License](/LICENSE)
+
+## Contact
+patosorio.88@gmail.com
