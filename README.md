@@ -49,3 +49,63 @@ This e-commerce project is a modern, scalable platform built with Next.js and Dj
 
 ## Contact
 patosorio.88@gmail.com
+
+
+
+backend/
+│
+├── app/
+│   ├── __init__.py              # App factory
+│   ├── config.py                # Environment configs (Dev, Prod)
+│   ├── extensions.py            # Extensions (Firebase, Stripe, etc.)
+│   ├── models/                  # Firestore / SQL model wrappers
+│   │   ├── user.py
+│   │   ├── order.py
+│   │   └── ...
+│   ├── api/                     # REST or GraphQL routes
+│   │   ├── __init__.py
+│   │   ├── auth.py
+│   │   ├── orders.py
+│   │   ├── payments.py
+│   │   └── ...
+│   ├── services/                # Business logic (e.g., invoice creation)
+│   │   ├── stripe_service.py
+│   │   ├── sendcloud_service.py
+│   │   └── whatsapp_service.py
+│   ├── tasks/                   # Async jobs (e.g. Celery or GCP Tasks)
+│   │   ├── send_invoice.py
+│   │   └── notify_user.py
+│   ├── utils/                   # Common utilities
+│   │   ├── decorators.py
+│   │   ├── firestore_helpers.py
+│   │   └── logger.py
+│   └── main.py                  # Entrypoint if running directly
+│
+├── migrations/                  # If using SQLAlchemy/Cloud SQL
+│
+├── tests/
+│   ├── test_auth.py
+│   └── test_orders.py
+│
+├── requirements.txt
+├── .env                         # Secrets (never commit to git)
+├── run.py                       # WSGI launcher
+└── gunicorn.conf.py             # For production deployment
+
+
+
+
+
+Backend Architecture Based on Directory Distribution
+- app/ Directory: This is the core of your application. It contains:
+-- __init__.py: This file is used to initialize your Flask app and configure extensions like Firebase. It can also register blueprints.
+-- config.py: Contains configuration settings for different environments (development, production).
+extensions.py: Initializes and configures third-party extensions like Firebase.
+-- models/: Contains data models, possibly for Firestore or SQL.
+-- api/: Contains route definitions and logic for handling HTTP requests.
+-- services/: Contains business logic that can be reused across different parts of the application.
+-- tasks/: Contains asynchronous tasks, possibly using Celery.
+-- utils/: Contains utility functions and decorators.
+-- migrations/: Used for database migrations if using SQLAlchemy.
+-- tests/: Contains test cases for your application.
+-- firebase/: Could be used for Firebase-specific logic or configurations.

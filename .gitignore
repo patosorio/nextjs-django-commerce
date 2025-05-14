@@ -28,11 +28,13 @@ client/.env.*
 *.swo
 .DS_Store
 *.pem
+backend/.ruff_cache/
 
 # Backend specific
 backend/db.sqlite3
 backend/db.sqlite3-journal
 backend/media/
+backend/firebase/*.json
 backend/staticfiles/
 backend/__pycache__/
 backend/*.pyc
